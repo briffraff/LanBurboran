@@ -1,2 +1,2 @@
-# lanBurboran
+# LanBurboran
 Lan chat
