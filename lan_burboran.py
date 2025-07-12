@@ -49,6 +49,18 @@ class LanBurboran:
         # TODO: send to server
         self.window_ui.input.clear()
 
+    def run_udp_server(self):
+        # TODO: receive requests and send responses
+        pass
+
+    def run_tcp_server(self):
+        # TODO: start TCP server and handle client connections
+        pass
+
+    def run_udp_client(self):
+        # TODO: send UDP broadcast and listen for server response
+        pass
+
 
 def main():
     app = QApplication(sys.argv)
