@@ -8,7 +8,7 @@ class LanBurboran_UI:
         central_widget = QWidget()
         layout = QVBoxLayout()
 
-        self.header = QLabel("Стая: LAN Chat Room • Онлайн: 1")
+        self.header = QLabel("Стая: LAN Chat Room • Онлайн: 0")
         layout.addWidget(self.header)
 
         self.current_user_label = QLabel("Вие сте: ...")

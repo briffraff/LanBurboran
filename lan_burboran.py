@@ -189,7 +189,7 @@ class LanBurboran:
                 self.tcp_clients[client_sock] = unique_username
                 self.signals.update_users.emit(self.users.copy())
                 self.broadcast_user_list()
-                join_msg = f"{self.format_time()} 💬 {unique_username} влезе в стаята."
+                join_msg = f"{self.format_time()} {constants.icons[0]} {unique_username} влезе в стаята."
                 self.broadcast_message(join_msg)
                 self.display_message(join_msg)
             except:
@@ -206,7 +206,7 @@ class LanBurboran:
                 except ConnectionResetError:
                     break
 
-            leave_msg = f"{self.format_time()} ❌ {unique_username} напусна стаята."
+            leave_msg = f"{self.format_time()} {constants.icons[4]} {unique_username} напусна стаята."
             self.broadcast_message(leave_msg)
             self.display_message(leave_msg)
             self.users.remove(unique_username)
