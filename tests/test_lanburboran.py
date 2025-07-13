@@ -78,6 +78,18 @@ class TestLanBurboran(unittest.TestCase):
         self.assertEqual(self.lanburboran.room_name, "TestRoom")
         self.assertIn("TestRoom", self.lanburboran.window_ui.header.text())
 
+    def test_send_message(self):
+        self.lanburboran.username = "Гошо"
+        self.lanburboran.window_ui.input.setText("Тест!")
+
+        self.lanburboran.tcp_sock = MagicMock()
+        self.lanburboran.send_message()
+
+        last_message = self.lanburboran.window_ui.chat_view.toPlainText(
+        ).strip().split("\n")[-1].split(" ", 1)[1]
+
+        self.assertEqual(last_message, "Гошо: Тест!")
+
 
 if __name__ == "__main__":
     unittest.main()
