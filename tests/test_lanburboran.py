@@ -3,6 +3,7 @@ from unittest.mock import patch, MagicMock
 from PySide6.QtWidgets import QApplication
 from lan_burboran import LanBurboran
 import constants
+import datetime
 
 app = QApplication([])
 
@@ -31,7 +32,7 @@ class TestLanBurboran(unittest.TestCase):
         self.lanburboran.window.close()
 
     def test_refresh_user_list(self):
-        test_users = {"user1", "user2"}
+        test_users = {"Гошо", "Пешо"}
         self.lanburboran.refresh_user_list(test_users)
         self.assertEqual(self.lanburboran.window_ui.user_list.count(), 2)
         self.assertIn("Онлайн: 2", self.lanburboran.window_ui.header.text())
@@ -89,6 +90,14 @@ class TestLanBurboran(unittest.TestCase):
         ).strip().split("\n")[-1].split(" ", 1)[1]
 
         self.assertEqual(last_message, "Гошо: Тест!")
+
+    @patch('lan_burboran.datetime')
+    def test_format_time_with_mocked_time(self, mock_datetime):
+        mock_datetime.now.return_value = datetime.datetime(2024, 7, 10, 15, 42)
+        mock_datetime.now.strftime = datetime.datetime.strftime
+
+        result = self.lanburboran.format_time()
+        self.assertEqual(result, "[15:42]")
 
 
 if __name__ == "__main__":
