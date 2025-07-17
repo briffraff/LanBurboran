@@ -45,6 +45,8 @@ class LanBurboran:
         self.signals.update_room_name.connect(self.update_room_name)
 
         self.window_ui.send_btn.clicked.connect(self.send_message)
+        self.window_ui.input.returnPressed.connect(self.handle_return_pressed)
+
         self.window_ui.switch_btn.clicked.connect(self.switch_room)
 
         if is_server:
@@ -60,6 +62,15 @@ class LanBurboran:
             threading.Thread(target=self.run_tcp_client, daemon=True).start()
 
         self.stop_client = threading.Event()
+
+    def handle_return_pressed(self):
+        modifiers = QApplication.keyboardModifiers()
+        if modifiers == Qt.ShiftModifier:
+            # Shift + Enter
+            self.window_ui.input.insert("\n")
+        else:
+            # Enter
+            self.send_message()
 
     def find_free_port(self):
         port = START_TCP_PORT
