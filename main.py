@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication
 from lan_burboran import LanBurboran
-from UI.welcome_window import WelcomeWindow
+from UI.welcome_window_UI import WelcomeWindow
 
 
 def main():
