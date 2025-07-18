@@ -13,7 +13,7 @@ class WelcomeWindow(QWidget):
         layout.setAlignment(Qt.AlignCenter)
 
         self.logo_label = QLabel()
-        pixmap = QPixmap("logo.png")
+        pixmap = QPixmap(r"Resources\icon.png")
         pixmap = pixmap.scaled(
             150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.logo_label.setPixmap(pixmap)
