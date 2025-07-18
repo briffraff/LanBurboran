@@ -1,0 +1,4 @@
+RUN UNITTESTS : 
+
+python -m unittest discover -s tests
+python -m unittest tests/test_welcome.py -v
