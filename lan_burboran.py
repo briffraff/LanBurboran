@@ -1,10 +1,10 @@
-import sys
 import socket
 import threading
 from datetime import datetime
 
 import constants
 from UI.lan_burboran_UI import LanBurboran_UI
+
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QInputDialog
 from PySide6.QtCore import Qt, Signal, QObject
 
@@ -24,7 +24,7 @@ class SignalHandler(QObject):
 
 
 class LanBurboran:
-    def __init__(self, is_server=False, room_name=DEFAULT_ROOM_NAME, server_ip=None, server_port=None):
+    def __init__(self, is_server=False, room_name=DEFAULT_ROOM_NAME, server_ip=None, server_port=None, username=None):
         self.window = QMainWindow()
         self.window_ui = LanBurboran_UI()
         self.window_ui.setupUi(self.window)
@@ -35,7 +35,7 @@ class LanBurboran:
         self.tcp_clients = {}
         self.server_ip = server_ip
         self.server_port = server_port
-        self.username = None
+        self.username = username
         self.tcp_sock = None
         self.system_name = f"User-{socket.gethostname()}"
 
@@ -58,7 +58,6 @@ class LanBurboran:
             self.window_ui.header.setStyleSheet(
                 "background-color: lightgreen; font-weight: bold;")
         else:
-            self.username = self.ask_for_username()
             threading.Thread(target=self.run_tcp_client, daemon=True).start()
 
         self.stop_client = threading.Event()
@@ -282,42 +281,3 @@ def discover_servers():
             except socket.timeout:
                 break
     return found_servers
-
-
-def main():
-    app = QApplication(sys.argv)
-    reply = QMessageBox.question(None, "Избор", "Създаване на стая (Server)?",
-                                 QMessageBox.Yes | QMessageBox.No)
-
-    is_server = (reply == QMessageBox.Yes)
-
-    if is_server:
-        room_name, ok = QInputDialog.getText(None, "Име на стая", "Въведете име на стаята:",
-                                             text=DEFAULT_ROOM_NAME)
-        if not ok or not room_name.strip():
-            room_name = DEFAULT_ROOM_NAME
-        chat = LanBurboran(is_server=True, room_name=room_name)
-    else:
-        servers = discover_servers()
-        if not servers:
-            QMessageBox.warning(None, "Няма стаи",
-                                "Не са намерени стаи в мрежата.")
-            sys.exit(0)
-        items = [f"{i+1}. {s[0]} ({s[1]}:{s[2]})" for i,
-                 s in enumerate(servers)]
-        selected, ok = QInputDialog.getItem(
-            None, "Избор на стая", "Изберете стая:", items, 0, False)
-        if ok:
-            index = int(selected.split(".")[0]) - 1
-            room_name, server_ip, server_port = servers[index]
-            chat = LanBurboran(is_server=False, room_name=room_name,
-                               server_ip=server_ip, server_port=server_port)
-        else:
-            sys.exit(0)
-
-    chat.window.show()
-    sys.exit(app.exec())
-
-
-if __name__ == "__main__":
-    main()
